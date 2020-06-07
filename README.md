@@ -25,6 +25,11 @@ yarn watch
 yarn build
 ```
 
+For development run
+
+    yarn devserver
+
+
 ## Learn more
 - [Build a data source plugin tutorial](https://grafana.com/tutorials/build-a-data-source-plugin)
 - [Grafana documentation](https://grafana.com/docs/)

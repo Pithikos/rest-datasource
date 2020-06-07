@@ -6,7 +6,8 @@
     "build": "grafana-toolkit plugin:build",
     "test": "grafana-toolkit plugin:test",
     "dev": "grafana-toolkit plugin:dev",
-    "watch": "grafana-toolkit plugin:dev --watch"
+    "watch": "grafana-toolkit plugin:dev --watch & onchange '*' echo 'test'",
+    "devserver": "onchange -i 'src/*' -- ./dev.sh"
   },
   "author": "Manos S.H.",
   "license": "Apache-2.0",
@@ -14,11 +15,14 @@
     "@grafana/data": "7.0.1",
     "@grafana/toolkit": "7.0.1",
     "@grafana/ui": "7.0.1",
-    "@types/lodash": "latest",
     "@testing-library/jest-dom": "5.4.0",
-    "@testing-library/react": "^10.0.2"
+    "@testing-library/react": "^10.0.2",
+    "@types/lodash": "^4.14.155"
   },
   "engines": {
     "node": ">=12 <13"
+  },
+  "dependencies": {
+    "onchange": "^7.0.2"
   }
 }
