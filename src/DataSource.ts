@@ -50,7 +50,7 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
       headers: { 'Content-Type': 'application/json' },
     }).then(resp => (response = resp));
 
-    if (response.status != 200) {
+    if (response.status !== 200) {
       return {
         status: 'failure',
         message: `Got ${response.status} for ${this.endpoint}. Must be 200`,
