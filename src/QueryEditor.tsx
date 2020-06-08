@@ -12,8 +12,10 @@ type Props = QueryEditorProps<DataSource, MyQuery, MyDataSourceOptions>;
 
 export class QueryEditor extends PureComponent<Props> {
   onResourcePathChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { onChange, query } = this.props;
+    const { onChange, query, onRunQuery } = this.props;
     onChange({ ...query, resourcePath: event.target.value });
+    // executes the query
+    onRunQuery();
   };
 
   onConstantChange = (event: ChangeEvent<HTMLInputElement>) => {
