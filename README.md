@@ -16,9 +16,9 @@ Add the datasource and set the `endpoint` to the endpoint of your API that you w
 
 When creating graphs you have two parameters;
 
-    `Resource Path`: Path to fetch the JSON from. E.g. `users/?active=true`
-    `Payload Key`:  Specify the key o access the payload. This is evaluated to javascript so
-      you can use a mix of dot notation, indice, etc. E.g. `userActivity.active[0]`
+  - `Resource Path`: Path to fetch the JSON from. E.g. `users/?active=true`
+  - `Payload Key`:  Specify the key o access the payload. This is evaluated to javascript so
+    you can use a mix of dot notation, indice, etc. E.g. `userActivity.active[0]`
 
 
 > Datasource endpoint will **always** receive a `from` and a `to` params.
