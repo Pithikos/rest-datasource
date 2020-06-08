@@ -61,6 +61,13 @@ The plugin will try to detect the type in this order:
   3. Will use the type of the first value in the array.
 
 
+## Visualizing the data
+
+With time series, the behaviour is as usual.
+
+For single fields, you need to choose `Panel > Fields` and choose either **All Fields** or the specific field.
+
+
 ## Development
 
 Ensure you have downloaded the Grafana gzip.
