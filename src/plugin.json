@@ -1,13 +1,13 @@
 {
   "type": "datasource",
-  "name": "json-datasource",
-  "id": "manos-json-datasource",
+  "name": "REST Datasource",
+  "id": "pithikos-rest-datasource",
   "metrics": true,
   "info": {
     "description": "JSON fetched from REST endpoint",
     "author": {
-      "name": "Manos S.H.",
-      "url": ""
+      "name": "Manos",
+      "url": "https://github.com/pithikos"
     },
     "keywords": [
       "json",

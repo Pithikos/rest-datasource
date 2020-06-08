@@ -1,5 +1,5 @@
 {
-  "name": "manos-json-datasource",
+  "name": "pithikos-rest-datasource",
   "version": "1.0.0",
   "description": "JSON fetched from REST endpoint",
   "scripts": {
