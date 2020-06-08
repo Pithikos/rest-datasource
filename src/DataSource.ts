@@ -13,6 +13,7 @@ import { MyQuery, MyDataSourceOptions, defaultQuery } from './types';
 
 export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
   constructor(instanceSettings: DataSourceInstanceSettings<MyDataSourceOptions>) {
+    this.endpoint = instanceSettings.jsonData.endpoint;
     super(instanceSettings);
   }
 
@@ -38,6 +39,23 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
 
   async testDatasource() {
     // Implement a health check for your data source.
+    let response = null;
+    if (!this.endpoint) {
+      return {
+        status: 'failure',
+        message: 'Missing endpoint',
+      };
+    }
+    await fetch(this.endpoint, {
+      headers: { 'Content-Type': 'application/json' },
+    }).then(resp => (response = resp));
+
+    if (response.status != 200) {
+      return {
+        status: 'failure',
+        message: `Got ${response.status} for ${this.endpoint}. Must be 200`,
+      };
+    }
     return {
       status: 'success',
       message: 'Success',
