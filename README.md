@@ -1,37 +1,82 @@
-# Grafana Data Source Plugin Template
+# Grafana REST datasource
 
 [![CircleCI](https://circleci.com/gh/grafana/simple-datasource/tree/master.svg?style=svg)](https://circleci.com/gh/grafana/simple-datasource/tree/master)
 
-This template is a starting point for building Grafana Data Source Plugins
+There's already two plugins for dealing with JSON but their interface is somewhat complex. This plugin
+tries to solve the major issues I personally had with those;
 
-## What is Grafana Data Source Plugin?
-Grafana supports a wide range of data sources, including Prometheus, MySQL, and even Datadog. There’s a good chance you can already visualize metrics from the systems you have set up. In some cases, though, you already have an in-house metrics solution that you’d like to add to your Grafana dashboards. Grafana Data Source Plugins enables integrating such solutions with Grafana.
+1. Keep a single REST endpoint to fetch the data.
+2. Querying works as normal URL. e.g. `/users/?active=true`
+3. Make it simple to fetch both single values but also time series data.
 
-## Getting started
-1. Install dependencies
-```BASH
-yarn install
-```
-2. Build plugin in development mode or run in watch mode
-```BASH
-yarn dev
-```
-or
-```BASH
-yarn watch
-```
-3. Build plugin in production mode
-```BASH
-yarn build
+
+## Plugin settings
+
+Add the datasource and set the `endpoint` to the endpoint of your API that you wish to expose the data.
+
+When creating graphs you have two parameters;
+
+    `Resource Path`: Path to fetch the JSON from. E.g. `users/?active=true`
+    `Payload Key`:  Specify the key o access the payload. This is evaluated to javascript so
+      you can use a mix of dot notation, indice, etc. E.g. `userActivity.active[0]`
+
+
+> Datasource endpoint will **always** receive a `from` and a `to` params.
+
+
+## Backend endpoint
+
+1. You need to implement a single endpoint that returns status 200 and the JSON data.
+2. Each metric in the JSON can return either a single value or an object of series.
+
+Below is a Django example
+
+```python
+from datetime import datetime
+
+class StatsView(APIView):
+    def get(self, request, format=None):
+        now = datetime.now().timestamp() * 1000  # Python uses secs instead of ms
+
+        return Response({
+            "numUsers": 2,
+            "userActivity": {
+                "active":   [1, 2, 5],
+                "inactive": [2, 5, 3],
+                "time": [
+                    now - 5000000,
+                    now - 1000000,
+                    now,
+                ]
+            },
+        })
 ```
 
-For development run
+`time` is special in this example in that it tells Grafana the type of values. This is needed mainly when dealing with dates.
+
+The plugin will try to detect the type in this order:
+
+  1. Check if key name corresponds to a known Grafana type (*boolean*, *string*, *time*, *trace*, *other*).
+  2. Check if key specifies a type; e.g. *birthday_date:time*
+  3. Will use the type of the first value in the array.
+
+
+## Development
+
+Ensure you have downloaded the Grafana gzip.
+
+Run server
 
     yarn devserver
 
+This will ensure that rebuilding of assets occur on file changes and restart the server.
 
-## Learn more
-- [Build a data source plugin tutorial](https://grafana.com/tutorials/build-a-data-source-plugin)
-- [Grafana documentation](https://grafana.com/docs/)
-- [Grafana Tutorials](https://grafana.com/tutorials/) - Grafana Tutorials are step-by-step guides that help you make the most of Grafana
-- [Grafana UI Library](https://developers.grafana.com/ui) - UI components to help you build interfaces using Grafana Design System
+Run tests
+
+    yarn test
+
+## Production
+
+Build assets
+
+    yarn build
