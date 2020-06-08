@@ -18,16 +18,16 @@ export class QueryEditor extends PureComponent<Props> {
     onRunQuery();
   };
 
-  onConstantChange = (event: ChangeEvent<HTMLInputElement>) => {
+  onResponseAccessChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { onChange, query, onRunQuery } = this.props;
-    onChange({ ...query, constant: parseFloat(event.target.value) });
+    onChange({ ...query, responseAccess: event.target.value });
     // executes the query
     onRunQuery();
   };
 
   render() {
     const query = defaults(this.props.query, defaultQuery);
-    const { resourcePath, constant } = query;
+    const { resourcePath, responseAccess } = query;
 
     return (
       <div className="gf-form">
@@ -39,12 +39,11 @@ export class QueryEditor extends PureComponent<Props> {
           tooltip="E.g. /users/?active=true"
         />
         <FormField
-          width={4}
-          value={constant}
-          onChange={this.onConstantChange}
-          label="Constant"
-          type="number"
-          step="0.1"
+          labelWidth={10}
+          value={responseAccess}
+          onChange={this.onResponseAccessChange}
+          label="Response Access"
+          tooltip="Specify which item to access from response object. E.g. data['num_users']"
         />
       </div>
     );

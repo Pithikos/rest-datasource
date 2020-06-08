@@ -44,17 +44,44 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
     const { range } = options;
     const from = range!.from.valueOf();
     const to = range!.to.valueOf();
+    const endpoint = this.endpoint;
 
-    // Return a constant for each query.
-    const data = options.targets.map(target => {
+    // Return a responseAccess for each query.
+    var data = [];
+    for (var i=0; i<options.targets.length; i++){
+      var target = options.targets[i];
       const query = defaults(target, defaultQuery);
-      return new MutableDataFrame({
+
+      // Fetch data
+      var resourcePath = !target.resourcePath ? '' : target.resourcePath;
+      var url = `${endpoint}${resourcePath}`
+      var responseData = await fetchResource(url);
+
+      // Access key
+      var values = eval(`responseData.${target.responseAccess}`);
+      if (typeof values == "undefined"){
+        console.log(`Invalid key: ${target.responseAccess}`)
+        return { data };
+      }
+
+      // Create dataframe
+      var fields = [];
+      if (typeof values == "object"){
+        // Series
+        var fieldNames = Object.keys(values);
+        fieldNames.forEach(function(fieldName){
+          fields.push({
+            name: fieldName, values: values[fieldName], type: getType(fieldName, values[fieldName]),
+          })
+        });
+      } else {
+        // Single value
+        fields = [{name: target.responseAccess, values: [values], type: getType(target.responseAccess, values))}]
+      }
+      data.push(new MutableDataFrame({
         refId: query.refId,
-        fields: [
-          { name: 'Time', values: [from, to], type: FieldType.time },
-          { name: 'Value', values: [query.constant, query.constant], type: FieldType.number },
-        ],
-      });
+        fields: fields,
+      }));
     });
 
     return { data };
