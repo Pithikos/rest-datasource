@@ -21,6 +21,14 @@ async function fetchResource(url) {
 }
 
 /*
+Add params to given url
+*/
+function addParams(url, params){
+  url += !url.includes("?") ? "?" : "&"
+  return url + $.param(params)
+}
+
+/*
 Infer type from the key and fallback to checking first value
 */
 function getType(key, values){
@@ -54,7 +62,10 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
 
       // Fetch data
       var resourcePath = !target.resourcePath ? '' : target.resourcePath;
-      var url = `${endpoint}${resourcePath}`
+      var url = addParams(endpoint + resourcePath, {
+        from: from,
+        to: to,
+      });
       var responseData = await fetchResource(url);
 
       // Access key
