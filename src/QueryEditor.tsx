@@ -18,16 +18,16 @@ export class QueryEditor extends PureComponent<Props> {
     onRunQuery();
   };
 
-  onResponseAccessChange = (event: ChangeEvent<HTMLInputElement>) => {
+  onPayloadKeyChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { onChange, query, onRunQuery } = this.props;
-    onChange({ ...query, responseAccess: event.target.value });
+    onChange({ ...query, payloadKey: event.target.value });
     // executes the query
     onRunQuery();
   };
 
   render() {
     const query = defaults(this.props.query, defaultQuery);
-    const { resourcePath, responseAccess } = query;
+    const { resourcePath, payloadKey } = query;
 
     return (
       <div className="gf-form">
@@ -36,14 +36,14 @@ export class QueryEditor extends PureComponent<Props> {
           value={resourcePath || ''}
           onChange={this.onResourcePathChange}
           label="Resource Path"
-          tooltip="E.g. /users/?active=true"
+          tooltip="Specify a specific subpath or use query params. E.g. /users/?active=true"
         />
         <FormField
           labelWidth={10}
-          value={responseAccess}
-          onChange={this.onResponseAccessChange}
-          label="Response Access"
-          tooltip="Specify which item to access from response object. E.g. data['num_users']"
+          value={payloadKey}
+          onChange={this.onPayloadKeyChange}
+          label="Payload Key"
+          tooltip="The key is evaluated as simple javascript. So you can use dot-notation, indice, etc. E.g. users[0].numImages"
         />
       </div>
     );

@@ -46,7 +46,7 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
     const to = range!.to.valueOf();
     const endpoint = this.endpoint;
 
-    // Return a responseAccess for each query.
+    // Return a payloadKey for each query.
     var data = [];
     for (var i=0; i<options.targets.length; i++){
       var target = options.targets[i];
@@ -58,9 +58,9 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
       var responseData = await fetchResource(url);
 
       // Access key
-      var values = eval(`responseData.${target.responseAccess}`);
+      var values = eval(`responseData.${target.payloadKey}`);
       if (typeof values == "undefined"){
-        console.log(`Invalid key: ${target.responseAccess}`)
+        console.log(`Invalid key: ${target.payloadKey}`)
         return { data };
       }
 
@@ -76,7 +76,7 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
         });
       } else {
         // Single value
-        fields = [{name: target.responseAccess, values: [values], type: getType(target.responseAccess, values))}]
+        fields = [{name: target.payloadKey, values: [values], type: getType(target.payloadKey, values))}]
       }
       data.push(new MutableDataFrame({
         refId: query.refId,
