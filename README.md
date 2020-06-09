@@ -1,5 +1,5 @@
 <h1>
-  <img width="130" height="130" title="Datasource Logo" src="src/img/logo.svg" style="margin-top: -5px;">
+  <img width="132" height="132" title="Datasource Logo" src="src/img/logo.svg" style="margin-top: -5px;">
   Datasource for Grafana
 </h1>
 
