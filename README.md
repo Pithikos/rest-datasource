@@ -1,7 +1,4 @@
-<h1>
-  <img width="132" height="132" title="Datasource Logo" src="src/img/logo.svg" style="margin-top: -5px;">
-  Datasource for Grafana
-</h1>
+<h1><img height="40" title="Datasource Logo" src="./src/img/logo.svg"> Datasource for Grafana</h1>
 
 [![CircleCI](https://circleci.com/gh/grafana/simple-datasource/tree/master.svg?style=svg)](https://circleci.com/gh/grafana/simple-datasource/tree/master)
 
