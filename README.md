@@ -12,10 +12,10 @@ There's already two json-datasource plugins, however they are both overly comple
 
 ## Plugin settings
 
-Add the datasource and set the `endpoint` to the base URL that you wish to expose the data. E.g. `myapp.com/stats/`
+ - `endpoint` - the base URL to use for fetching data, e.g. `myapp.com/stats/`
+ - `authorization` - value of the Authorization header.
 
-
-> Note that you can add URL params. The backend endpoint will **always** receive a `from` and a `to` params regardless.
+> If you are using the authorization header, ensure that the user with the token only has access to the endpoint and not more.
 
 
 ## Backend endpoint
@@ -46,7 +46,10 @@ class StatsView(APIView):
         })
 ```
 
-`time` is special in this example in that it tells Grafana the type of values. This is needed mainly when dealing with dates.
+A few things to note:
+
+  - `time` is special in this example in that it tells Grafana the type of values. This is needed mainly when dealing with dates.
+  - the backend will always receive the params `from` and `to` which can be used for filtering based on timestamps.
 
 The plugin will try to detect the type in this order:
 
@@ -62,6 +65,8 @@ When creating graphs you have two parameters;
   - `Resource Path`: Path to fetch the JSON from. E.g. `users/?active=true`
   - `Payload Key`:  Specify the key to access the payload. This is evaluated to javascript so
     you can use common javascript. E.g. `userActivity.active[0]`
+
+> Resource path can take URL params. These will be added to the de-facto `from` and `to` which are sent regardless.
 
 With time series, graphs are crated as usual.
 

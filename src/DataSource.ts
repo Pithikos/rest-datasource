@@ -8,13 +8,14 @@ import {
   MutableDataFrame,
 } from '@grafana/data';
 
-import { addParams, getType, fetchResource } from './api';
+import { addParams, getType, fetchJson, fetchResource } from './api';
 
 import { MyQuery, MyDataSourceOptions, defaultQuery } from './types';
 
 export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
   constructor(instanceSettings: DataSourceInstanceSettings<MyDataSourceOptions>) {
     this.endpoint = instanceSettings.jsonData.endpoint;
+    this.authHeader = instanceSettings.jsonData.authHeader;
     super(instanceSettings);
   }
 
@@ -36,7 +37,7 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
         from: from,
         to: to,
       });
-      var responseData = await fetchResource(url);
+      var responseData = await fetchResource(url, this.authHeader);
 
       // Access key
       var values = eval(`responseData.${target.payloadKey}`); // eslint-disable-line no-eval
@@ -80,17 +81,16 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
 
   async testDatasource() {
     // Implement a health check for your data source.
-    let response = null;
     if (!this.endpoint) {
       return {
         status: 'failure',
         message: 'Missing endpoint',
       };
     }
-    await fetch(this.endpoint, {
-      headers: { 'Content-Type': 'application/json' },
-    }).then(resp => (response = resp));
 
+    // Check endpoint and credentials
+    let response = null;
+    await fetchJson(this.endpoint, this.authHeader).then(resp => (response = resp));
     if (response.status !== 200) {
       return {
         status: 'failure',
