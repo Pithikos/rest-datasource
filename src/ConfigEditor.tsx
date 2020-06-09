@@ -55,8 +55,8 @@ export class ConfigEditor extends PureComponent<Props, State> {
         <div className="gf-form">
           <FormField
             label="Endpoint"
-            labelWidth={6}
-            inputWidth={20}
+            labelWidth={10}
+            inputWidth={24}
             onChange={this.onEndpointChange}
             value={jsonData.endpoint || ''}
             placeholder="E.g. http://localhost:8000/mymetrics/"
@@ -68,12 +68,13 @@ export class ConfigEditor extends PureComponent<Props, State> {
             <SecretFormField
               isConfigured={(secureJsonFields && secureJsonFields.apiKey) as boolean}
               value={secureJsonData.apiKey || ''}
-              label="API Key"
-              placeholder="secure json field (backend only)"
-              labelWidth={6}
-              inputWidth={20}
+              label="Authorization Token"
+              placeholder="Token sent with Authorization header"
+              labelWidth={10}
+              inputWidth={24}
               onReset={this.onResetAPIKey}
               onChange={this.onAPIKeyChange}
+              tooltip="Will result in the header 'Authorization: Token <token>'"
             />
           </div>
         </div>
