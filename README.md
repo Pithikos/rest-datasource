@@ -5,26 +5,20 @@
 
 [![CircleCI](https://circleci.com/gh/grafana/simple-datasource/tree/master.svg?style=svg)](https://circleci.com/gh/grafana/simple-datasource/tree/master)
 
-There's already two plugins for dealing with JSON but their interface is somewhat complex. This plugin
-tries to solve the major issues I personally had with those;
+There's already two json-datasource plugins, however they are both overly complex. So I made this plugin to save you some time;
 
-1. Keep a single REST endpoint to fetch the data.
-2. Querying works as normal URL. e.g. `/users/?active=true`
-3. Make it simple to fetch both single values but also time series data.
+1. Keep a single base REST endpoint to fetch the data.
+2. Keep it RESTful; support nested resources, URL params and only GET allowed.
+3. Support for single values and time series data.
+4. Infer types without cluttering the backend API.
 
 
 ## Plugin settings
 
-Add the datasource and set the `endpoint` to the endpoint of your API that you wish to expose the data.
-
-When creating graphs you have two parameters;
-
-  - `Resource Path`: Path to fetch the JSON from. E.g. `users/?active=true`
-  - `Payload Key`:  Specify the key o access the payload. This is evaluated to javascript so
-    you can use a mix of dot notation, indice, etc. E.g. `userActivity.active[0]`
+Add the datasource and set the `endpoint` to the base URL that you wish to expose the data. E.g. `myapp.com/stats/`
 
 
-> Datasource endpoint will **always** receive a `from` and a `to` params.
+> Note that you can add URL params. The backend endpoint will **always** receive a `from` and a `to` params regardless.
 
 
 ## Backend endpoint
@@ -66,21 +60,29 @@ The plugin will try to detect the type in this order:
 
 ## Visualizing the data
 
-With time series, the behaviour is as usual.
+When creating graphs you have two parameters;
 
-For single fields, you need to choose `Panel > Fields` and choose either **All Fields** or the specific field.
+  - `Resource Path`: Path to fetch the JSON from. E.g. `users/?active=true`
+  - `Payload Key`:  Specify the key to access the payload. This is evaluated to javascript so
+    you can use common javascript. E.g. `userActivity.active[0]`
+
+With time series, graphs are crated as usual.
+
+For single values, you need to choose `Panel > Fields` and choose either **All Fields** or a specific field.
 
 
 ## Development
 
-Ensure you have downloaded the Grafana gzip.
+Ensure you have downloaded the Grafana gzip. Ensure this project lives under `data/plugins` from the unzipped tarball.
 
 Run server
 
-    export GRAFANA_HOME="../../../"
+    export GRAFANA_HOME=<path to unzipped Grafana>
     yarn devserver
 
 This will ensure that rebuilding of assets occur on file changes and restart the server.
+
+> If you need to reset the database, simply remove the *grafana.db* file.
 
 Run tests
 
