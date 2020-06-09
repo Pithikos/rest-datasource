@@ -1,7 +1,7 @@
 {
   "type": "datasource",
   "name": "REST Datasource",
-  "id": "pithikos-rest-datasource",
+  "id": "rest-datasource",
   "metrics": true,
   "info": {
     "description": "JSON fetched from REST endpoint",
