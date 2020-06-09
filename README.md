@@ -97,11 +97,11 @@ Build assets
 
     yarn build
 
-Make a release
+Make a release ([ref](https://grafana.com/tutorials/build-a-data-source-plugin/#9))
 
     # bump version in package.json
     git checkout -b release-<version>
     git add -f dist
     git commit -m "Release <version>"
-    git tag -a <version>
+    git tag -a <version> -m <version>
     git push --follow-tags
