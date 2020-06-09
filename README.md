@@ -96,3 +96,12 @@ Run tests
 Build assets
 
     yarn build
+
+Make a release
+
+    # bump version in package.json
+    git checkout -b release-<version>
+    git add -f dist
+    git commit -m "Release <version>"
+    git tag -a <version>
+    git push --follow-tags
