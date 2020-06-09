@@ -22,18 +22,18 @@ export function getType(key, values) {
   return typeof values[0];
 }
 
-export async function fetchJson(url, token) {
+export async function fetchJson(url, authHeader) {
   let headers = {
     'Content-Type': 'application/json',
   };
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
+  if (authHeader) {
+    headers['Authorization'] = authHeader;
   }
   return fetch(url, { headers: headers });
 }
 
-export async function fetchResource(url, token) {
-  return fetchJson(url, { headers: headers })
+export async function fetchResource(url, authHeader) {
+  return fetchJson(url, authHeader)
     .then(function(resp) {
       return resp.json();
     })
