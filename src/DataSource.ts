@@ -70,7 +70,7 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
       var responseData = await fetchResource(url);
 
       // Access key
-      var values = eval(`responseData.${target.payloadKey}`);
+      var values = eval(`responseData.${target.payloadKey}`); // eslint-disable-line no-eval
       if (typeof values === 'undefined') {
         console.log(`Invalid key: ${target.payloadKey}`);
         return { data };
