@@ -1,6 +1,6 @@
 {
   "name": "rest-datasource",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "JSON fetched from REST endpoint",
   "scripts": {
     "build": "grafana-toolkit plugin:build",
