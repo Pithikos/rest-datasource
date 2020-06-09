@@ -74,6 +74,7 @@ Ensure you have downloaded the Grafana gzip.
 
 Run server
 
+    export GRAFANA_HOME="../../../"
     yarn devserver
 
 This will ensure that rebuilding of assets occur on file changes and restart the server.
@@ -81,6 +82,7 @@ This will ensure that rebuilding of assets occur on file changes and restart the
 Run tests
 
     yarn test
+
 
 ## Production
 
