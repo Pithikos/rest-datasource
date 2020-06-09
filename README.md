@@ -1,3 +1,7 @@
+<img align="right" width="200" height="200"
+     title="Datasource Logo"
+     src="src/img/logo.svg">
+
 # REST Datasource for Grafana
 
 [![CircleCI](https://circleci.com/gh/grafana/simple-datasource/tree/master.svg?style=svg)](https://circleci.com/gh/grafana/simple-datasource/tree/master)
