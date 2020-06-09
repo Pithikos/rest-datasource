@@ -9,11 +9,7 @@
       "name": "Manos",
       "url": "https://github.com/pithikos"
     },
-    "keywords": [
-      "json",
-      "rest",
-      "urls"
-    ],
+    "keywords": ["json", "rest", "urls", "restful", "generic"],
     "logos": {
       "small": "img/logo.svg",
       "large": "img/logo.svg"
