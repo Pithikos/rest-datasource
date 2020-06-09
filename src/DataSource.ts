@@ -134,3 +134,7 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
     };
   }
 }
+
+module.exports = {};
+module.exports.addParams = addParams;
+module.exports.getType = getType;
