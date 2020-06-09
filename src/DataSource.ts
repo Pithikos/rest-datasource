@@ -6,42 +6,11 @@ import {
   DataSourceApi,
   DataSourceInstanceSettings,
   MutableDataFrame,
-  FieldType,
 } from '@grafana/data';
 
+import { addParams, getType, fetchResource } from './api';
+
 import { MyQuery, MyDataSourceOptions, defaultQuery } from './types';
-
-async function fetchResource(url) {
-  return fetch(url, { headers: { 'Content-Type': 'application/json' } })
-    .then(function(resp) {
-      return resp.json();
-    })
-    .then(function(data) {
-      return data;
-    });
-}
-
-/*
-Add params to given url
-*/
-function addParams(url, params) {
-  url += !url.includes('?') ? '?' : '&';
-  return url + $.param(params);
-}
-
-/*
-Infer type from the key and fallback to checking first value
-*/
-function getType(key, values) {
-  let keyLower = key.toLowerCase();
-  if (FieldType[keyLower]) {
-    return FieldType[keyLower];
-  }
-  if (keyLower.includes(':')) {
-    return FieldType[key.split(':')[1]];
-  }
-  return typeof values[0];
-}
 
 export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
   constructor(instanceSettings: DataSourceInstanceSettings<MyDataSourceOptions>) {
@@ -134,7 +103,3 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
     };
   }
 }
-
-module.exports = {};
-module.exports.addParams = addParams;
-module.exports.getType = getType;
