@@ -13,33 +13,34 @@ import { MyQuery, MyDataSourceOptions, defaultQuery } from './types';
 
 async function fetchResource(url) {
   return fetch(url, { headers: { 'Content-Type': 'application/json' } })
-    .then(function(resp){
+    .then(function(resp) {
       return resp.json();
-    }).then(function(data){
-      return data;
     })
+    .then(function(data) {
+      return data;
+    });
 }
 
 /*
 Add params to given url
 */
-function addParams(url, params){
-  url += !url.includes("?") ? "?" : "&"
-  return url + $.param(params)
+function addParams(url, params) {
+  url += !url.includes('?') ? '?' : '&';
+  return url + $.param(params);
 }
 
 /*
 Infer type from the key and fallback to checking first value
 */
-function getType(key, values){
+function getType(key, values) {
   let keyLower = key.toLowerCase();
-  if (FieldType[keyLower]){
+  if (FieldType[keyLower]) {
     return FieldType[keyLower];
   }
-  if (keyLower.includes(":")){
+  if (keyLower.includes(':')) {
     return FieldType[key.split(':')[1]];
   }
-  return typeof(values[0]);
+  return typeof values[0];
 }
 
 export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
@@ -56,7 +57,7 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
 
     // Return a payloadKey for each query.
     var data = [];
-    for (var i=0; i<options.targets.length; i++){
+    for (var i = 0; i < options.targets.length; i++) {
       var target = options.targets[i];
       const query = defaults(target, defaultQuery);
 
@@ -70,30 +71,40 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
 
       // Access key
       var values = eval(`responseData.${target.payloadKey}`);
-      if (typeof values == "undefined"){
-        console.log(`Invalid key: ${target.payloadKey}`)
+      if (typeof values === 'undefined') {
+        console.log(`Invalid key: ${target.payloadKey}`);
         return { data };
       }
 
       // Create dataframe
       var fields = [];
-      if (typeof values == "object"){
+      if (typeof values === 'object') {
         // Series
         var fieldNames = Object.keys(values);
-        fieldNames.forEach(function(fieldName){
+        fieldNames.forEach(function(fieldName) {
           fields.push({
-            name: fieldName, values: values[fieldName], type: getType(fieldName, values[fieldName]),
-          })
+            name: fieldName,
+            values: values[fieldName],
+            type: getType(fieldName, values[fieldName]),
+          });
         });
       } else {
         // Single value
-        fields = [{name: target.payloadKey, values: [values], type: getType(target.payloadKey, values))}]
+        fields = [
+          {
+            name: target.payloadKey,
+            values: [values],
+            type: getType(target.payloadKey, values),
+          },
+        ];
       }
-      data.push(new MutableDataFrame({
-        refId: query.refId,
-        fields: fields,
-      }));
-    });
+      data.push(
+        new MutableDataFrame({
+          refId: query.refId,
+          fields: fields,
+        })
+      );
+    }
 
     return { data };
   }
