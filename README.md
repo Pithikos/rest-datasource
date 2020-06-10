@@ -105,3 +105,7 @@ Make a release ([ref](https://grafana.com/tutorials/build-a-data-source-plugin/#
     git commit -m "Release <version>"
     git tag -a <version> -m <version>
     git push --follow-tags
+
+Build zip
+
+    yarn zip

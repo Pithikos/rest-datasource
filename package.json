@@ -4,6 +4,7 @@
   "description": "JSON fetched from REST endpoint",
   "scripts": {
     "build": "grafana-toolkit plugin:build",
+    "zip": "./scripts/zip.sh",
     "test": "grafana-toolkit plugin:test && jest",
     "dev": "grafana-toolkit plugin:dev",
     "watch": "grafana-toolkit plugin:dev --watch & onchange '*' echo 'test'",
