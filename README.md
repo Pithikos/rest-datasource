@@ -10,12 +10,17 @@ There's already two json-datasource plugins, however they are both overly comple
 4. Infer types without cluttering the backend API.
 
 
-## Plugin settings
+## Installation
 
- - `endpoint` - the base URL to use for fetching data, e.g. `myapp.com/stats/`
- - `authorization` - value of the Authorization header.
+Ensure you have at least **Grafana v7**. The plugin works with earlier versions but then you might not be able to visualize
+single values in a graph.
 
-> If you are using the authorization header, ensure that the user with the token only has access to the endpoint and not more.
+Once added the rest-datasource, you must specify two settings
+
+ - (required) `endpoint` - the base URL to use for fetching data, e.g. `http://myapp.com/stats/`
+ - (optional) `authorization` - value of the Authorization header.
+
+> If you are using the authorization header, ensure that the user with the token only has access to the endpoint and nothing else to minimize risk.
 
 
 ## Backend endpoint
@@ -60,17 +65,14 @@ The plugin will try to detect the type in this order:
 
 ## Visualizing the data
 
-When creating graphs you have two parameters;
+You can vizualize a single value like below
 
-  - `Resource Path`: Path to fetch the JSON from. E.g. `users/?active=true`
-  - `Payload Key`:  Specify the key to access the payload. This is evaluated to javascript so
-    you can use common javascript. E.g. `userActivity.active[0]`
+<img title="Example settings" src="https://raw.githubusercontent.com/Pithikos/rest-datasource/master/docs/single_value_settings.png">
 
-> Resource path can take URL params. These will be added to the de-facto `from` and `to` which are sent regardless.
+The *resource path* tells what to access from the payload (you can use dot-notation, etc.). We then need to select the specific field
+in the panel since we're dealing with a single value. Otherwise we can only visualize the value in a table format.
 
-With time series, graphs are crated as usual.
-
-For single values, you need to choose `Panel > Fields` and choose either **All Fields** or a specific field.
+Non-single values in the payload can be shown directly without any extra work.
 
 
 ## Development
